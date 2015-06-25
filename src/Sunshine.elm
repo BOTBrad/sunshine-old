@@ -1,11 +1,12 @@
 -- TODO: restrict imports
 -- TODO: create engine module
-import Graphics.Collage exposing (..)
 import Graphics.Element exposing (..)
 import Keyboard exposing (..)
 import Signal exposing (..)
-import Text
 import Time exposing (..)
+
+import Model exposing (Model)
+import View
 
 -- MAIN
 
@@ -42,28 +43,7 @@ main =
 -- takes the dimensions of the collage, the a timestamped copy of the model to generate the view
 
 view : (Int, Int) -> (Time, Model) -> Element
-view (width, height) (time, model) =
-  collage width height
-    [ toForm (show (inSeconds time))
-    , { model
-        | x <- model.x time
-        , y <- model.y time
-        }
-      |> show
-      |> toForm
-      |> move (0, 20)
-    ]
-
--- MODEL
-
--- all the data for the program
-
-type alias Model =
-  { x              : Time -> Float
-  , y              : Time -> Float
-  , inputEvents    : Int
-  , physicsUpdates : Int
-  }
+view = View.view
 
 -- EVENT
 
