@@ -82,7 +82,7 @@ handleInput : (Time, RawInput) -> Model -> Model
 handleInput (time, input) model =
   { model
     | x           <- (\t -> (model.x time) + toFloat input.x * (inSeconds (t - time) * 10))
-    , y           <- (\t -> (model.y time) + toFloat input.y * (inSeconds (t - time) * 10))
+    , y           <- if input.y > 0 && model.y time <= 0 then (\t -> (model.y time) + toFloat input.y * (inSeconds (t - time) * 10) - (inSeconds (t - time))^2) else model.y
     , inputEvents <- model.inputEvents + 1
   }
 
