@@ -20,8 +20,8 @@ main =
     physicsFps         = 120
     windowDimensions   = (800, 600)
     model =
-      { x              = (\t -> 0)
-      , y              = (\t -> 0)
+      { x              = \t -> 0
+      , y              = \t -> 0
       , inputEvents    = 0
       , physicsUpdates = 0
       }
@@ -78,11 +78,15 @@ type alias RawInput =
 
 -- updates the model in response to user input
 
+xVelocity = 10
+jumpVelocity = 10
+gravity = 9.8
+
 handleInput : (Time, RawInput) -> Model -> Model
 handleInput (time, input) model =
   { model
-    | x           <- (\t -> (model.x time) + toFloat input.x * (inSeconds (t - time) * 10))
-    , y           <- if input.y > 0 && model.y time <= 0 then (\t -> (model.y time) + toFloat input.y * (inSeconds (t - time) * 10) - (inSeconds (t - time))^2) else model.y
+    | x           <- \t -> (model.x time) + toFloat input.x * (inSeconds (t - time) * 10) * xVelocity
+    , y           <- if input.y > 0 && model.y time <= 0 then \t -> (model.y time) + toFloat input.y * (inSeconds (t - time) * 10) * jumpVelocity - (inSeconds (t - time) * gravity)^2 else model.y
     , inputEvents <- model.inputEvents + 1
   }
 
@@ -94,7 +98,6 @@ handleInput (time, input) model =
 physicsUpdate : Time -> Model -> Model
 physicsUpdate time model =
   { model
-    | y              <- if model.y time < 0 then (\t -> 0) else model.y
+    | y              <- if model.y time < 0 then \t -> 0 else model.y
     , physicsUpdates <- model.physicsUpdates + 1
   }
-

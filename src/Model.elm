@@ -12,4 +12,3 @@ type alias Model =
   , inputEvents    : Int
   , physicsUpdates : Int
   }
-
