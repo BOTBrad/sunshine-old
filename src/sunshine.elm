@@ -19,8 +19,8 @@ main =
     physicsFps         = 120
     windowDimensions   = (800, 600)
     model =
-      { x              = 0
-      , y              = 0
+      { x              = (\t -> 0)
+      , y              = (\t -> 0)
       , inputEvents    = 0
       , physicsUpdates = 0
       }
@@ -45,7 +45,13 @@ view : (Int, Int) -> (Time, Model) -> Element
 view (width, height) (time, model) =
   collage width height
     [ toForm (show (inSeconds time))
-    , move (0, 20) (toForm (show model))
+    , { model
+        | x <- model.x time
+        , y <- model.y time
+        }
+      |> show
+      |> toForm
+      |> move (0, 20)
     ]
 
 -- MODEL
@@ -53,12 +59,11 @@ view (width, height) (time, model) =
 -- all the data for the program
 
 type alias Model =
-  { x              : Int
-  , y              : Int
+  { x              : Time -> Float
+  , y              : Time -> Float
   , inputEvents    : Int
   , physicsUpdates : Int
   }
-
 
 -- EVENT
 
@@ -96,8 +101,8 @@ type alias RawInput =
 handleInput : (Time, RawInput) -> Model -> Model
 handleInput (time, input) model =
   { model
-    | x           <- model.x + input.x
-    , y           <- model.y + input.y
+    | x           <- (\t -> (model.x time) + toFloat input.x * (inSeconds (t - time) * 10))
+    , y           <- (\t -> (model.y time) + toFloat input.y * (inSeconds (t - time) * 10))
     , inputEvents <- model.inputEvents + 1
   }
 
@@ -109,6 +114,7 @@ handleInput (time, input) model =
 physicsUpdate : Time -> Model -> Model
 physicsUpdate time model =
   { model
-    | physicsUpdates <- model.physicsUpdates + 1
+    | y              <- if model.y time < 0 then (\t -> 0) else model.y
+    , physicsUpdates <- model.physicsUpdates + 1
   }
 
