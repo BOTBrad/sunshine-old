@@ -9168,9 +9168,11 @@ Elm.View.make = function (_elm) {
    _L = _N.List.make(_elm),
    $moduleName = "View",
    $Basics = Elm.Basics.make(_elm),
+   $Color = Elm.Color.make(_elm),
    $Graphics$Collage = Elm.Graphics.Collage.make(_elm),
    $Graphics$Element = Elm.Graphics.Element.make(_elm),
    $Model = Elm.Model.make(_elm),
+   $Text = Elm.Text.make(_elm),
    $Time = Elm.Time.make(_elm);
    var collapseModel = F2(function (model,
    time) {
@@ -9194,21 +9196,27 @@ Elm.View.make = function (_elm) {
                          return A3($Graphics$Collage.collage,
                          _v0._0,
                          _v0._1,
-                         _L.fromArray([$Graphics$Collage.move({ctor: "_Tuple2"
+                         _L.fromArray([$Graphics$Collage.filled(A3($Color.rgb,
+                                      174,
+                                      238,
+                                      238))(A2($Graphics$Collage.rect,
+                                      $Basics.toFloat(_v0._0),
+                                      $Basics.toFloat(_v0._1)))
+                                      ,$Graphics$Collage.move({ctor: "_Tuple2"
                                                               ,_0: 0
-                                                              ,_1: -32})($Graphics$Collage.toForm($Graphics$Element.show($Basics.floor($Time.inSeconds(_v1._0)))))
+                                                              ,_1: -32})($Graphics$Collage.toForm($Graphics$Element.leftAligned($Text.fromString($Basics.toString($Basics.floor($Time.inSeconds(_v1._0)))))))
                                       ,$Graphics$Collage.move({ctor: "_Tuple2"
                                                               ,_0: snapshot.x
                                                               ,_1: snapshot.y})($Graphics$Collage.toForm(A3($Graphics$Element.image,
                                       16,
                                       16,
-                                      "assets/bird-walk.png")))]));
+                                      "assets/bird-stand.png")))]));
                       }();}
                  _U.badCase($moduleName,
-                 "between lines 12 and 25");
+                 "between lines 13 and 30");
               }();}
          _U.badCase($moduleName,
-         "between lines 12 and 25");
+         "between lines 13 and 30");
       }();
    });
    _elm.View.values = {_op: _op
