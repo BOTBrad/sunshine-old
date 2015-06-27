@@ -85,9 +85,9 @@ gravity = 9.8
 handleInput : (Time, RawInput) -> Model -> Model
 handleInput (time, input) model =
   { model
-    | x           <- \t -> (model.x time) + toFloat input.x * (inSeconds (t - time) * 10) * xVelocity
-    , y           <- if input.y > 0 && model.y time <= 0 then \t -> (model.y time) + toFloat input.y * (inSeconds (t - time) * 10) * jumpVelocity - (inSeconds (t - time) * gravity)^2 else model.y
-    , inputEvents <- model.inputEvents + 1
+  | x           <- \t -> (model.x time) + toFloat input.x * (inSeconds (t - time) * 10) * xVelocity
+  , y           <- if input.y > 0 && model.y time <= 0 then \t -> (model.y time) + toFloat input.y * (inSeconds (t - time) * 10) * jumpVelocity - (inSeconds (t - time) * gravity)^2 else model.y
+  , inputEvents <- model.inputEvents + 1
   }
 
 -- PHYSICS UPDATE
@@ -98,6 +98,6 @@ handleInput (time, input) model =
 physicsUpdate : Time -> Model -> Model
 physicsUpdate time model =
   { model
-    | y              <- if model.y time < 0 then \t -> 0 else model.y
-    , physicsUpdates <- model.physicsUpdates + 1
+  | y              <- if model.y time < 0 then \t -> 0 else model.y
+  , physicsUpdates <- model.physicsUpdates + 1
   }
