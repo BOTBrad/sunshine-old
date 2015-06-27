@@ -1,8 +1,9 @@
 module View (view) where
 
+import Color exposing (rgb)
 import Graphics.Collage exposing (..)
 import Graphics.Element exposing (..)
-import Text
+import Text exposing (fromString)
 import Time exposing (..)
 
 import Model exposing (Model)
@@ -13,9 +14,17 @@ view (width, height) (time, model) =
     snapshot = collapseModel model time
   in
     collage width height
-      [ toForm (show (inSeconds time))
-      , snapshot
-        |> show
+      [ rect (toFloat width) (toFloat height)
+        |> filled (rgb 174 238 238)
+      , time
+        |> inSeconds
+        |> floor
+        |> toString
+        |> fromString
+        |> leftAligned
+        |> toForm
+        |> move (0, -32)
+      , image 16 16 "assets/bird-stand.png"
         |> toForm
         |> move (snapshot.x, snapshot.y)
       ]
