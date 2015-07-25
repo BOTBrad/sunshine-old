@@ -25,21 +25,20 @@ main =
     model              = defaultModel
   in
     view windowDimensions
-    <~ timestamp 
-         (sampleOn
-           (fps graphicsFps)
-           (foldp
-             update
-             model
-             (merge
-               (RawInputEvent  <~ (timestamp keysDown))
-               (PhysicsTick    <~ (timestamp (fps physicsFps))))))
+    <~ (sampleOn
+         (fps graphicsFps)
+         (foldp
+           update
+           model
+           (merge
+             (RawInputEvent  <~ (timestamp keysDown))
+             (PhysicsTick    <~ (timestamp (fps physicsFps))))))
 
 -- VIEW
 
 -- takes the dimensions of the collage, the a timestamped copy of the model to generate the view
 
-view : (Int, Int) -> (Time, Model) -> Element
+view : (Int, Int) -> Model -> Element
 view = View.view
 
 -- EVENT
@@ -63,5 +62,5 @@ update event model =
   case event of
     RawInputEvent evt ->
       Input.handle evt model
-    PhysicsTick (time, delta) ->
-      Tick.handle time model
+    PhysicsTick evt ->
+      Tick.handle evt model

@@ -9,12 +9,12 @@ import Model exposing (Model)
 
 handle: (Time, Set KeyCode) -> Model -> Model
 handle (time, keys) model =
-  model
-  |> updateController keys
-  |> updateModel time
+  { model
+  | controller <- updateController keys
+  }
 
-updateController : Set KeyCode -> Model -> Model
-updateController keys model =
+updateController : Set KeyCode -> Controller
+updateController keys =
   let
     cb =
       { left  = 37
@@ -23,7 +23,7 @@ updateController keys model =
       , right = 39
       }
   in
-    { model | controller <- toController cb keys }
+    toController cb keys
 
 toController : ControllerBinding -> Set KeyCode -> Controller
 toController binding keys =
@@ -36,19 +36,3 @@ toController binding keys =
     y = (isDown binding.up) - (isDown binding.down)
   in
     { direction = (x, y) }
-
-updateModel : Time -> Model -> Model
-updateModel time model =
-  let
-    (x, y)       = model.controller.direction
-    xVelocity    = 10
-    jumpVelocity = 10
-    gravity      = 9.8
-  in
-    { model
-    | x <- \t -> (model.x time) + toFloat x * (inSeconds (t - time) * 10) * xVelocity
-    , y <- if y > 0 && model.y time <= 0
-             then \t -> (model.y time) + toFloat y * (inSeconds (t - time) * 10) * jumpVelocity - (inSeconds (t - time) * gravity)^2
-             else model.y
-    , inputEvents <- model.inputEvents + 1
-    }

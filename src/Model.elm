@@ -9,8 +9,8 @@ import Update.Controller exposing (Controller, defaultController)
 -- all the data for the program
 
 type alias Model =
-  { x              : Time -> Float
-  , y              : Time -> Float
+  { position       : (Float, Float)
+  , speed          : Float
   , controller     : Controller
   , inputEvents    : Int
   , physicsUpdates : Int
@@ -18,8 +18,8 @@ type alias Model =
 
 defaultModel : Model
 defaultModel =
-  { x              = \t -> 0
-  , y              = \t -> 0
+  { position       = (0, 0)
+  , speed          = 100
   , controller     = defaultController
   , inputEvents    = 0
   , physicsUpdates = 0
