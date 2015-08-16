@@ -1,4 +1,4 @@
-module Update.Controller (Controller, ControllerBinding, defaultController, toUnitVector) where
+module Model.Controller (Controller, ControllerBinding, defaultController, toUnitVector) where
 
 import Keyboard exposing (KeyCode)
 

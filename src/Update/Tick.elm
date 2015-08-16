@@ -1,23 +1,29 @@
 module Update.Tick (handle) where
 
+import List exposing (foldl)
 import Time exposing (Time, inSeconds)
 
 import Model exposing (Model)
-import Update.Controller exposing (Controller, toUnitVector)
+import Model.Controller exposing (Controller, toUnitVector)
+import Update.Tick.Physics as Physics
 
 -- params are: (current time, time since last update) -> Model
 handle : (Time, Time) -> Model -> Model
-handle (time, deltaT) model =
+handle (time, deltaMs) model =
   let
-    delta = inSeconds deltaT
+    delta = inSeconds deltaMs
   in
-    { model
-    | physicsUpdates <- model.physicsUpdates + 1
-    , position <- updatePosition delta model.controller.direction model.speed model.position
-    }
+    model
+    |> Physics.update delta
+    |> updateMetaData delta
 
--- params: time delta -> control stick -> speed -> old position
 updatePosition : Float -> (Int, Int) -> Float -> (Float, Float) -> (Float, Float)
 updatePosition delta dir speed (x_in, y_in) =
   let (xv, yv) = toUnitVector dir
   in (x_in + xv * speed * delta , y_in + yv * speed * delta)
+
+updateMetaData : Float -> Model -> Model
+updateMetaData _ model =
+  { model
+  | physicsUpdates <- model.physicsUpdates + 1
+  }

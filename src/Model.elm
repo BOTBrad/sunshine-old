@@ -2,7 +2,7 @@ module Model (defaultModel, Model) where
 
 import Time exposing (..)
 
-import Update.Controller exposing (Controller, defaultController)
+import Model.Controller exposing (Controller, defaultController)
 
 -- MODEL
 

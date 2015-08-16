@@ -4,17 +4,11 @@ import Keyboard exposing (KeyCode)
 import Set exposing (Set)
 
 import Time exposing (Time, inSeconds)
-import Update.Controller exposing (Controller, ControllerBinding)
 import Model exposing (Model)
+import Model.Controller exposing (Controller, ControllerBinding)
 
 handle: (Time, Set KeyCode) -> Model -> Model
 handle (time, keys) model =
-  { model
-  | controller <- updateController keys
-  }
-
-updateController : Set KeyCode -> Controller
-updateController keys =
   let
     cb =
       { left  = 37
@@ -23,10 +17,12 @@ updateController keys =
       , right = 39
       }
   in
-    toController cb keys
+    { model
+    | controller <- updateController cb keys
+    }
 
-toController : ControllerBinding -> Set KeyCode -> Controller
-toController binding keys =
+updateController : ControllerBinding -> Set KeyCode -> Controller
+updateController binding keys =
   let
     isDown key =
       if Set.member key keys
