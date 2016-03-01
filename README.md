@@ -1,5 +1,5 @@
-# on hold (probably indefinitely)
-elm is really cool but has some very annoying weaknesses. on top of that I'm working on some other more interesting things now so I don't know if I'll ever come back to this, and if I do I will probably have to port it to purescript or something else.
+# no longer on hold!
+I'm revisiting this project after learning more about elm and finding some cool libraries. [check it out here][new repo].
 
 # sunshine
 a game made in elm 
@@ -8,3 +8,7 @@ a game made in elm
 
 - the various TODOs throughout the code
 - make a makefile
+
+[]: references
+
+[new repo]: https://github.com/BOTBrad/sunshine
